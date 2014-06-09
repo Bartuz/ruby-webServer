@@ -35,23 +35,18 @@ class Server
 		puts @lines
 	end
 
-	def read_file(path)
-		if File.exists?(filename)
-  			response = File.read(filename)
+	def read_file(fileName)
+		if File.exists?(fileName)
+  			file = File.open(fileName,'r') do |f|
+				@response = f.read
+			end
 		else
-  			response = "File Not Found"
-		end
-		
-		file = File.open(path,'r') do |f|
-			@response = f.read
-		end
+  			@response = "File Not Found"
+		end		
 	end
 
-	# Accepts the array of request lines
-	def read_request_path(lines)                
-  		if /^[A-Z]+\s+\/(\S++)/ =~ lines[0]       
-    		request_path = $1                       
-  		end                                  
+	def request_path
+		path = @lines[0].gsub(/GET \//, '').gsub(/\ HTTP.*/, '')
 	end
 
 	#Output html file
@@ -69,8 +64,12 @@ loop do
 
 	#wait for client to connect
 	webServer.accept_connection
-	fileName = lines[0].gsub(/GET \//, '').gsub(/\ HTTP.*/, '')
-	webServer.read_file(fileName)
+
+	#Submit request log
+	webServer.read_request_log
+	
+	#Read request path
+	webServer.read_file(webServer.request_path)
 	webServer.disp_html
 	webServer.close_connection
 
