@@ -7,7 +7,7 @@ More specifically, the TCPServer and TCPSocket objects.
 
 1. Start your server `ruby server.rb`
 
-2. To connect to your server, open your browser to [http://localhost:2000](http://localhost:2000)
+2. To connect to your server, open your browser to [http://localhost:8080](http://localhost:8080)
 
 3. See what happens in your terminal and in browser.
 
