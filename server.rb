@@ -30,13 +30,21 @@ class Server
 	  	end
 	end
 
- 	#Output the full request to stdout
+ 	#Output the request to stdout
 	def output_full_request
 		puts @lines
 	end
 
-	def read_file
-		@response = 
+	def read_file(path)
+		if File.exists?(filename)
+  			response = File.read(filename)
+		else
+  			response = "File Not Found"
+		end
+		
+		file = File.open(path,'r') do |f|
+			@response = f.read
+		end
 	end
 
 	# Accepts the array of request lines
@@ -46,10 +54,9 @@ class Server
   		end                                  
 	end
 
-	#Output current time
+	#Output html file
 	def disp_html
-
-		@client.puts(response)
+		client.puts(@response)
 	end
 
 end
@@ -62,6 +69,8 @@ loop do
 
 	#wait for client to connect
 	webServer.accept_connection
+	fileName = lines[0].gsub(/GET \//, '').gsub(/\ HTTP.*/, '')
+	webServer.read_file(fileName)
 	webServer.disp_html
 	webServer.close_connection
 
