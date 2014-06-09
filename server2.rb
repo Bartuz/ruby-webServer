@@ -11,6 +11,8 @@ while (session = server.accept)
 	trimmedRequest = request.gsub(/GET\ \//, '').gsub(/\ HTTP.*/, '')
 
 	filename = trimmedRequest.chomp
+	
+	
 	if(filename == "")
 		filename = "index.html"
 	end
@@ -23,7 +25,7 @@ while (session = server.accept)
 		session.print("File not found")
 	end
 	session.close
-	
+
 end
 
 
