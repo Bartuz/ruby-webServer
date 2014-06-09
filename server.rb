@@ -36,11 +36,22 @@ class Server
 
 	def read_file(fileName)
 		if File.exists?(fileName)
+			#Request OK Add header
+			@client.puts "HTTP/1.1 200 OK\r\n"
+
+			#Be able to read css or html files
+			if fileName =~ /.css$/
+				@client.puts "Content-Type: text/css\r\n\r\n"
+			else
+				@client.puts "Content-Type: text/html\r\n\r\n"
+			end
+
   			file = File.open(fileName,'r') do |f|
 				@response = f.read
 			end
 		else
-  			@response = "<h1>404: File Not Found</h1>"
+			#Not Found Error
+			@response = "HTTP/1.1 404 Not Found\r\n"
 		end		
 	end
 
