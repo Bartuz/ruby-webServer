@@ -1,34 +1,31 @@
-#simplifies network programming enormously
-require 'socket'
+# Require socket from Ruby Standard Library (stdlib)
+require 'socket'                                    
 
-#server bound to port 8080
-server = TCPServer.new('127.0.0.1',8080)
+# Socket to listen to defined host and port
+server = TCPServer.open(host, port)
 
+# Output to stdout that server started                 
+puts "Server started on #{host}:#{port} ..."        
 
-while (session = server.accept)
-	session.print "HTTP/1.1 200/OK\r\nContent-type:text/html\r\n\r\n"
-	request = session.gets
-	trimmedRequest = request.gsub(/GET\ \//, '').gsub(/\ HTTP.*/, '')
+#server runs forever
+loop do  
+	# Wait for a client to connect. Accept returns a TCPSocket
+	client = server.accept
 
-	filename = trimmedRequest.chomp
-	if(filename == "")
-		filename = "index.html"
-	end
+	lines = []
 
-	begin
-		displayFile = File.open(filename, 'r')
-		content = displayFile.read()
-		session.print(content)
-	rescue Errno::ENOENT
-		session.print("File not found")
-	end
-	session.close
-	
-end
+	# Read the request and collect it until it's empty
+	while (line = client.gets.chomp) && !line.empty?  
+    	lines << line
+  	end
 
+ 	#Output the full request to stdout
+ 	puts lines
 
+ 	#Output current time to client
+	client.puts(Time.now.ctime)
 
+	# Disconnect from the client
+  	client.close                                      
 
-
-
-
+  end
