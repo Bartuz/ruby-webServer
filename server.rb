@@ -19,7 +19,6 @@ class Server
 	#Disconnect from the client
 	def close_connection
 		@client.close
-		puts "Disconnected: #{Time.now.ctime}."
 	end
 
 	# Read the request and collect it until it's empty
@@ -41,7 +40,7 @@ class Server
 				@response = f.read
 			end
 		else
-  			@response = "File Not Found"
+  			@response = "<h1>404: File Not Found</h1>"
 		end		
 	end
 
@@ -67,10 +66,14 @@ loop do
 
 	#Submit request log
 	webServer.read_request_log
-	
+
 	#Read request path
 	webServer.read_file(webServer.request_path)
+
+	#display the page
 	webServer.disp_html
+
+	#close connection
 	webServer.close_connection
 
 end
