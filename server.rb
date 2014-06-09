@@ -52,7 +52,6 @@ class Server
 	def disp_html
 		client.puts(@response)
 	end
-
 end
 
 
