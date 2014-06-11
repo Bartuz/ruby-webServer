@@ -25,15 +25,3 @@ loop do
 	puts "Disconnected: #{Time.now.ctime}."
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
